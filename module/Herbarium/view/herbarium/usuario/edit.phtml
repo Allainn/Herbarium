@@ -1,0 +1,38 @@
+<?php
+    $title = $this->title . ' Usuário';
+    $this->headTitle($title);
+?>
+<h1><?=$this->escapeHtml($title)?></h1>
+<?php
+    $form = $this->form;
+    $form->setAttribute('action', $this->url(
+        'herbarium',
+        [
+            'action' => 'save',
+            'controller' => 'usuario'
+        ]));
+    
+    $form->prepare();
+
+    echo $this->form()->openTag($form);
+    echo $this->formRow($form->get('id'));
+    echo '<br>';
+    echo $this->formRow($form->get('nome'));
+    echo '<br>';
+    echo $this->formRow($form->get('sobrenome'));
+    echo '<br>';
+    echo $this->formRow($form->get('login'));
+    echo '<br>';
+    echo $this->formRow($form->get('senha'));
+    echo '<br>';
+    echo $this->formRow($form->get('link_lattes'));
+    echo '<br>';
+    echo $this->formRow($form->get('tb_tipo_usuarios_id'));
+    echo '<br>';
+    echo $this->formRow($form->get('status'));
+    echo '<br>';
+    echo $this->formRow($form->get('submit'));
+    //echo $this->formcollection($form);
+    echo $this->form()->closeTag();
+
+?>

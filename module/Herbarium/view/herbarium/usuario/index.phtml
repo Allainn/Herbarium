@@ -1,0 +1,36 @@
+<?php
+    $this->headScript()->prependFile($this->basePath() . '/js/delete.js', 'text/javascript');
+    $title = 'Usuários ';
+    $this->headTitle($title);
+?>
+<h1><?=$this->escapeHtml($title)?></h1>
+
+<table class="table">
+<tr>
+    <th>Nome Completo</th>
+    <th>Tipo Usuário</th>
+    <th>&nbsp;</th>
+</tr>
+<?php foreach ($this->models as $model):?>
+<tr>
+    <td><?=$this->escapeHtml($model->nome." ".$model->sobrenome)?></td>
+    <td><?=$this->escapeHtml($model->tipoUsuario->descricao)?></td>
+    <td>
+        <a href="<?=$this->url('herbarium',
+            array(
+                'action'=>'edit',
+                'controller'=>'usuario',
+                'key' => $model->codigo
+            )
+        )?>">Editar</a>
+        <button class="delete" url="<?=$this->url('herbarium',
+            array(
+                'action'=>'delete',
+                'controller'=>'usuario',
+                'key' => $model->codigo
+            )
+        )?>">Desativar</button>
+    </td>
+</tr>
+<?php endforeach ?>
+</table>
