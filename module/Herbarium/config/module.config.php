@@ -21,6 +21,16 @@ use Herbarium\Model\TipoUsuario;
 return [
     'router' => [
         'routes' => [
+            'home' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route'    => '/',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
             'herbarium' => [
                 'type'    => Segment::class,
                 'options' => [
