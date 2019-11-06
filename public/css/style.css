@@ -52,10 +52,11 @@ body.principal{
 
 div.conteudo{
     width: 80%;
-    height: 100%;
+    height: 105%;
     float: right;
     max-width: 99%;
     background-color: rgb(235, 235, 235);
+    overflow:auto;
 }
 
 div.menu{
@@ -63,7 +64,7 @@ div.menu{
     background-color: #2E2E2E;
     border-right: 2px solid #35BF5C;
     width: 20%;
-    height: 99%;
+    height: 105%;
 }
 
 .menu li {
@@ -102,5 +103,9 @@ footer.rodape{
 }
 
 .rodape p{
-    margin-top: 15px;
+    margin-top: 10px;
+}
+
+.form-control{
+    font-size: 30px;
 }
