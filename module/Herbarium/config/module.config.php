@@ -34,7 +34,7 @@ return [
             'herbarium' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/herbarium[/:controller[/:action]]',
+                    'route'    => '/herbarium[/:controller[/:action[/:key]]]',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
                         'action'     => 'index',
@@ -81,9 +81,9 @@ return [
         ],
     ],
     'route_layouts' => [
-        '*'           => 'layout/layout', 
+        'herbarium'   => 'layout/user', 
+        'home'   => 'layout/user', 
         'login'       => 'layout/login',
-        'error*'      => 'error/error',
         'error/404'   => 'error/404',
         'error/index' => 'error/index',
     ],
@@ -95,7 +95,8 @@ return [
         'exception_template'       => 'error/index',
         'template_map' => [
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
-            'layout/login'           => __DIR__ . '/../view/layout/layout_login.phtml',
+            'layout/user'             => __DIR__ . '/../view/layout/layout_user.phtml',
+            'layout/login'            => __DIR__ . '/../view/layout/layout_login.phtml',
             'herbarium/index/index'   => __DIR__ . '/../view/herbarium/index/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',

@@ -1,5 +1,5 @@
 <?php
-    $this->headScript()->prependFile($this->basePath() . '/js/delete.js', 'text/javascript');
+    $this->headScript()->prependFile($this->basePath() . '/js/ativar.js', 'text/javascript');
     $title = 'Usuários ';
     $this->headTitle($title);
 ?>
@@ -20,16 +20,14 @@
             array(
                 'action'=>'edit',
                 'controller'=>'usuario',
-                'key' => $model->codigo
+                'key' => $model->id
             )
         )?>">Editar</a>
-        <button class="delete" url="<?=$this->url('herbarium',
-            array(
-                'action'=>'delete',
-                'controller'=>'usuario',
-                'key' => $model->codigo
-            )
-        )?>">Desativar</button>
+        <?php if($model->status == 1) {
+            echo("<button class='desativar' url='".$this->url('herbarium',array('action'=>'desativar','controller'=>'usuario','key' => $model->id))."'>Desativar</button>");
+        } else {
+            echo("<button class='ativar' url='".$this->url('herbarium',array('action'=>'ativar','controller'=>'usuario','key' => $model->id))."'>Ativar</button>");
+        }?>
     </td>
 </tr>
 <?php endforeach ?>

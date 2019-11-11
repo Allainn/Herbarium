@@ -116,16 +116,5 @@
                 ));
             }
         }
-
-        /**
-         * 
-         * @param mixed $keyValue
-         */
-        public function deleteModel($keyValue)
-        {
-            $this->tableGateway->delete(array(
-                $this->keyName => $keyValue
-            ));
-        }
     }
 ?>

@@ -49,31 +49,38 @@ class UsuarioController extends AbstractActionController
      */
     public function editAction()
     {
-        $codigo = $this->params()->fromRoute('key', null);
-        $usuario = $this->table->getModel($codigo);
-        //print_r($usuario);
-        $form = new UsuarioForm(
-            'usuario',
-            ['table' => $this->parentTable]
-        );
-        $form->get('submit')->setValue(
-            empty($codigo) ? 'Cadastrar' : 'Alterar'
-        );
-        $sessionStorage = new SessionArrayStorage();
-        if (isset($sessionStorage->model)){
-            $usuario->exchangeArray($sessionStorage->model->toArray());
-            unset($sessionStorage->model);
-            $form->setInputFilter($usuario->getInputFilter());
-            $this->initValidatorTranslator();
-            $form->bind($usuario);
-            $form->isValid();
-        } else{
-            $form->bind($usuario);
+        $sessionManager = new SessionManager();
+        $sessionManager->start();
+        if(isset($_SESSION['logado']) && $_SESSION['logado'] == 'SIM'){
+            $id = $this->params()->fromRoute('key', null);
+            $usuario = $this->table->getModel($id);
+            //print_r($usuario);
+            $form = new UsuarioForm(
+                'usuario',
+                ['table' => $this->parentTable]
+            );
+            $form->get('submit')->setValue(
+                empty($id) ? 'Cadastrar' : 'Alterar'
+            );
+            $sessionStorage = new SessionArrayStorage();
+            if (isset($sessionStorage->model)){
+                $usuario->exchangeArray($sessionStorage->model->toArray());
+                unset($sessionStorage->model);
+                $form->setInputFilter($usuario->getInputFilter());
+                $this->initValidatorTranslator();
+                $form->bind($usuario);
+                $form->isValid();
+            } else{
+                $form->bind($usuario);
+            }
+            return [
+                'form' => $form,
+                'title' => empty($id) ? 'Incluir' : 'Alterar'
+            ];
         }
-        return [
-            'form' => $form,
-            'title' => empty($codigo) ? 'Incluir' : 'Alterar'
-        ];
+        return $this->redirect()->toRoute(
+            'login'
+        );
     }
 
     /**
@@ -81,52 +88,82 @@ class UsuarioController extends AbstractActionController
      */
     public function saveAction()
     {
-        $request = $this->getRequest();
-        if ($request->isPost()) {
-            $form = new UsuarioForm(
-                'usuario',
-                ['table' => $this->parentTable]
-            );
-            $usuario = new Usuario();
-            $form->setInputFilter($usuario->getInputFilter());
-            $post = $request->getPost();
-            $form->setData($post);
-            if (!$form->isValid()){
-                $sessionStorage = new SessionArrayStorage();
-                $sessionStorage->model = $post;
-                return $this->redirect()->toRoute(
-                    'herbarium',
-                    [
-                        'action'=>'edit',
-                        'controller'=>'usuario'
-                    ]
+        $sessionManager = new SessionManager();
+        $sessionManager->start();
+        if(isset($_SESSION['logado']) && $_SESSION['logado'] == 'SIM'){
+            $request = $this->getRequest();
+            if ($request->isPost()) {
+                $form = new UsuarioForm(
+                    'usuario',
+                    ['table' => $this->parentTable]
                 );
+                $usuario = new Usuario();
+                $form->setInputFilter($usuario->getInputFilter());
+                $post = $request->getPost();
+                $form->setData($post);
+                if (!$form->isValid()){
+                    $sessionStorage = new SessionArrayStorage();
+                    $sessionStorage->model = $post;
+                    return $this->redirect()->toRoute(
+                        'herbarium',
+                        [
+                            'action'=>'edit',
+                            'controller'=>'usuario'
+                        ]
+                    );
+                }
+                $usuario->exchangeArray($form->getData());
+                if(isset($usuario->id)){
+                    $usuario->id = 0;
+                }
+                $this->table->saveModel($usuario);
             }
-            $usuario->exchangeArray($form->getData());
-            if(isset($usuario->id)){
-                $usuario->id = 0;
-            }
-            $this->table->saveModel($usuario);
+            return $this->redirect()->toRoute(
+                'herbarium',
+                [
+                    'action'=>'edit',
+                    'controller'=>'usuario'
+                ]
+            );
         }
         return $this->redirect()->toRoute(
-            'herbarium',
-            [
-                'action'=>'edit',
-                'controller'=>'usuario'
-            ]
+            'login'
         );
     }
 
-    /**
-     * Action to remove records
-     */
-    public function deleteAction()
-    {
-        $codigo = $this->params()->fromRoute('key', null);
-        $this->table->deleteModel($codigo);
+    public function ativarAction(){
+        $sessionManager = new SessionManager();
+        $sessionManager->start();
+        if(isset($_SESSION['logado']) && $_SESSION['logado'] == 'SIM'){
+            $id = $this->params()->fromRoute('key', null);
+            $usuario = $this->table->getModel($id);
+            $usuario->status = 1;
+            $this->table->saveModel($usuario);
+            return $this->redirect()->toRoute(
+                'herbarium',
+                ['controller'=>'usuario']
+            );
+        }
         return $this->redirect()->toRoute(
-            'herbarium',
-            ['controller'=>'usuario']
+            'login'
+        );
+    }
+
+    public function desativarAction(){
+        $sessionManager = new SessionManager();
+        $sessionManager->start();
+        if(isset($_SESSION['logado']) && $_SESSION['logado'] == 'SIM'){
+            $id = $this->params()->fromRoute('key', null);
+            $usuario = $this->table->getModel($id);
+            $usuario->status = 0;
+            $this->table->saveModel($usuario);
+            return $this->redirect()->toRoute(
+                'herbarium',
+                ['controller'=>'usuario']
+            );
+        }
+        return $this->redirect()->toRoute(
+            'login'
         );
     }
 

@@ -23,8 +23,10 @@
     echo '<br>';
     echo $this->formRow($form->get('login'));
     echo '<br>';
-    echo $this->formRow($form->get('senha'));
-    echo '<br>';
+    print_r($form->getAttribute('action'));
+        echo $this->formRow($form->get('senha'));
+        echo '<br>';
+    
     echo $this->formRow($form->get('link_lattes'));
     echo '<br>';
     echo $this->formRow($form->get('tb_tipo_usuarios_id'));
