@@ -30,13 +30,21 @@ class AutenticacaoController extends AbstractActionController
             $usuario->exchangeArray($sessionStorage->model->toArray());
             unset($sessionStorage->model);
         }
-        if (isset($usuario->id)){
-            $_SESSION['logado']= 'SIM'; 
-            $_SESSION['login']= $login;
-            $_SESSION['usuario']= $usuario->nome;
-            $_SESSION['tipo_usuario']= $usuario->tipoUsuario->descricao;
-            echo "<script>alert('Logado com Sucesso');</script>";
-            echo "<script> document.location.href = '/herbarium'; </script>"; 
+        if (isset($usuario->id) ){
+            if ($usuario->status == 1) { 
+                $_SESSION['logado']= 'SIM'; 
+                $_SESSION['login']= $login;
+                $_SESSION['usuario']= $usuario->nome;
+                //id 1 = Administrador
+                //id 2 = Coletor
+                $_SESSION['tipo_usuario']= $usuario->tipoUsuario->id;
+                echo "<script>alert('Logado com Sucesso');</script>";
+                echo "<script> document.location.href = '/herbarium'; </script>";
+            }
+            else {
+                echo "<script>alert('Usuário desativado!');</script>";
+                echo "<script> document.location.href = '/login'; </script>";    
+            }
         }
         else
         {     
