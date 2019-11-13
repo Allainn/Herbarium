@@ -36,7 +36,7 @@ return [
             'herbarium' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/herbarium[/:controller[/:action[/:key]]]',
+                    'route'    => '/herbarium[/:controller[/:action[/:key[/:status]]]]',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
                         'action'     => 'index',
