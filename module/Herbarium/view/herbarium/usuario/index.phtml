@@ -24,9 +24,9 @@
             )
         )?>">Editar</a>
         <?php if($model->status == 1) {
-            echo("<button class='desativar' url='".$this->url('herbarium',array('action'=>'desativar','controller'=>'usuario','key' => $model->id))."'>Desativar</button>");
+            echo("<button class='desativar' url='".$this->url('herbarium',array('action'=>'ativar','controller'=>'usuario','key' => $model->id, 'status' => '0'))."'>Desativar</button>");
         } else {
-            echo("<button class='ativar' url='".$this->url('herbarium',array('action'=>'ativar','controller'=>'usuario','key' => $model->id))."'>Ativar</button>");
+            echo("<button class='ativar' url='".$this->url('herbarium',array('action'=>'ativar','controller'=>'usuario','key' => $model->id, 'status' => '1'))."'>Ativar</button>");
         }?>
     </td>
 </tr>
