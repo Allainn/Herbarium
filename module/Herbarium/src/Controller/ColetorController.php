@@ -16,6 +16,7 @@ use Zend\I18n\Translator\Translator;
 use Zend\I18n\Translator\Resources;
 use Herbarium\Form\Coletor as ColetorForm;
 use Herbarium\Model\Coletor;
+use Zend\Session\SessionManager;
 
 class ColetorController extends AbstractActionController
 {
