@@ -1,0 +1,28 @@
+<?php
+    $title = 'Coletores ';
+    $this->headTitle($title);
+?>
+<h1><?=$this->escapeHtml($title)?></h1>
+
+<table class="table">
+<tr>
+    <th>Nome Completo</th>
+    <th>Nome Citações</th>
+    <th>&nbsp;</th>
+</tr>
+<?php foreach ($this->models as $model):?>
+<tr>
+    <td><?=$this->escapeHtml($model->nome_completo)?></td>
+    <td><?=$this->escapeHtml($model->nome_citacoes)?></td>
+    <td>
+        <a href="<?=$this->url('herbarium',
+            array(
+                'action'=>'edit',
+                'controller'=>'coletor',
+                'key' => $model->id
+            )
+        )?>">Editar</a>
+    </td>
+</tr>
+<?php endforeach ?>
+</table>

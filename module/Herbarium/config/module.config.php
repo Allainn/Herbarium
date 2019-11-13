@@ -17,6 +17,8 @@ use Herbarium\Model\UsuarioTable;
 use Herbarium\Model\Usuario;
 use Herbarium\Model\TipoUsuarioTable;
 use Herbarium\Model\TipoUsuario;
+use Herbarium\Model\ColetorTable;
+use Herbarium\Model\Coletor;
 
 return [
     'router' => [
@@ -57,6 +59,7 @@ return [
         'aliases' => [
             'autenticacao' => Controller\AutenticacaoController::class,
             'usuario' => Controller\UsuarioController::class,
+            'coletor' => Controller\ColetorController::class,
             'herbarium' => Controller\IndexController::class,
         ],
         'factories' => [
@@ -66,6 +69,11 @@ return [
                 $table = $sm->get(TipoUsuarioTable::class);
                 $sessionManager = new SessionManager();
                 return new Controller\TipoUsuarioController($table, $sessionManager);
+            },
+            Controller\ColetorController::class => function($sm){
+                $table = $sm->get(ColetorTable::class);
+                $sessionManager = new SessionManager();
+                return new Controller\ColetorController($table, $sessionManager);
             },
             Controller\AutenticacaoController::class => function($sm){
                 $table = $sm->get(UsuarioTable::class);
@@ -82,7 +90,7 @@ return [
     ],
     'route_layouts' => [
         'herbarium'   => 'layout/user', 
-        'home'   => 'layout/user', 
+        'home'        => 'layout/user', 
         'login'       => 'layout/login',
         'error/404'   => 'error/404',
         'error/index' => 'error/index',
@@ -132,6 +140,17 @@ return [
                 $resultSetPrototype = new ResultSet();
                 $resultSetPrototype->setArrayObjectPrototype(new TipoUsuario());
                 return new TableGateway('tb_tipo_usuarios', $dbAdapter, null, $resultSetPrototype);
+            },
+            ColetorTable::class => function($sm) {
+                $tableGateway = $sm->get('ColetorTableGateway');
+                $table = new ColetorTable($tableGateway);
+                return $table;
+            },
+            'ColetorTableGateway' => function($sm) {
+                $dbAdapter = $sm->get('Zend\Db\Adapter');
+                $resultSetPrototype = new ResultSet();
+                $resultSetPrototype->setArrayObjectPrototype(new Coletor());
+                return new TableGateway('tb_coletores', $dbAdapter, null, $resultSetPrototype);
             },
         ]
     ]
