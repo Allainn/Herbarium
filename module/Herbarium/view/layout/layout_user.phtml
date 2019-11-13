@@ -67,6 +67,27 @@
                         </a>
                     </div>
                 </li>
+
+                <li class="active">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="<?=$this->url(
+                                'herbarium',
+                                array(
+                                    'action'=>'edit',
+                                    'controller'=>'coletor'
+                                )
+                            )?>">
+                            Cadastro Coletor
+                        </a>
+                    </div>
+                </li>
+                <li class="active">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="<?= $this->url('herbarium',['controller'=>'coletor']) ?>">
+                            Listar Coletores
+                        </a>
+                    </div>
+                </li>
             </ul>
             <!-- <button class="tablinks" onclick="openCity(event, 'London')">London</button>
             <button class="tablinks" onclick="openCity(event, 'Paris')">Paris</button>
