@@ -45,54 +45,14 @@
         </nav>
 
 
-        <div class="container menu">
-            <ul class="nav navbar-nav">
-                <li class="active">
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="<?=$this->url(
-                                'herbarium',
-                                array(
-                                    'action'=>'edit',
-                                    'controller'=>'usuario'
-                                )
-                            )?>">
-                            Cadastro Usuário
-                        </a>
-                    </div>
-                </li>
-                <li class="active">
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="<?= $this->url('herbarium',['controller'=>'usuario']) ?>">
-                            Listar Usuários
-                        </a>
-                    </div>
-                </li>
-
-                <li class="active">
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="<?=$this->url(
-                                'herbarium',
-                                array(
-                                    'action'=>'edit',
-                                    'controller'=>'coletor'
-                                )
-                            )?>">
-                            Cadastro Coletor
-                        </a>
-                    </div>
-                </li>
-                <li class="active">
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="<?= $this->url('herbarium',['controller'=>'coletor']) ?>">
-                            Listar Coletores
-                        </a>
-                    </div>
-                </li>
-            </ul>
-            <!-- <button class="tablinks" onclick="openCity(event, 'London')">London</button>
-            <button class="tablinks" onclick="openCity(event, 'Paris')">Paris</button>
-            <button class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</button> -->
-        </div>
+        <?php 
+        if(isset($_SESSION['tipo_usuario']) && $_SESSION['tipo_usuario'] == 1) {
+            include "menu_admin.phtml"; 
+        }
+        else {
+            include "menu_coletor.phtml"; 
+        }
+        ?>
 
         <div class="container conteudo">
             <?= $this->content ?>
