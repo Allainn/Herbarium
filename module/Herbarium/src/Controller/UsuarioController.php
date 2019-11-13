@@ -34,14 +34,20 @@ class UsuarioController extends AbstractActionController
     {
         $sessionManager = new SessionManager();
         $sessionManager->start();
-        if(isset($_SESSION['logado']) && $_SESSION['logado'] == 'SIM'){
+        if(isset($_SESSION['tipo_usuario']) && $_SESSION['tipo_usuario'] == 1){
             return new ViewModel(
                 ['models' => $this->table->fetchAll()]
             );
         }
-        return $this->redirect()->toRoute(
-            'login'
-        );
+        else if(isset($_SESSION['tipo_usuario']) && $_SESSION['tipo_usuario'] == 2) {
+            echo "<script>alert('Você não tem permissão de acessar está página!');</script>";
+            echo "<script> document.location.href = '/herbarium'; </script>";
+        }
+        else {
+            return $this->redirect()->toRoute(
+                'login'
+            );
+        }
     }
 
     /**
@@ -51,7 +57,7 @@ class UsuarioController extends AbstractActionController
     {
         $sessionManager = new SessionManager();
         $sessionManager->start();
-        if(isset($_SESSION['logado']) && $_SESSION['logado'] == 'SIM'){
+        if(isset($_SESSION['tipo_usuario']) && $_SESSION['tipo_usuario'] == 1){
             $id = $this->params()->fromRoute('key', null);
             $usuario = $this->table->getModel($id);
             //print_r($usuario);
@@ -78,9 +84,15 @@ class UsuarioController extends AbstractActionController
                 'title' => empty($id) ? 'Incluir' : 'Alterar'
             ];
         }
-        return $this->redirect()->toRoute(
-            'login'
-        );
+        else if(isset($_SESSION['tipo_usuario']) && $_SESSION['tipo_usuario'] == 2) {
+            echo "<script>alert('Você não tem permissão de acessar está página!');</script>";
+            echo "<script> document.location.href = '/herbarium'; </script>";
+        }
+        else {
+            return $this->redirect()->toRoute(
+                'login'
+            );
+        }
     }
 
     /**
@@ -90,7 +102,7 @@ class UsuarioController extends AbstractActionController
     {
         $sessionManager = new SessionManager();
         $sessionManager->start();
-        if(isset($_SESSION['logado']) && $_SESSION['logado'] == 'SIM'){
+        if(isset($_SESSION['tipo_usuario']) && $_SESSION['tipo_usuario'] == 1){
             $request = $this->getRequest();
             if ($request->isPost()) {
                 $form = new UsuarioForm(
@@ -126,45 +138,40 @@ class UsuarioController extends AbstractActionController
                 ]
             );
         }
-        return $this->redirect()->toRoute(
-            'login'
-        );
+        else if(isset($_SESSION['tipo_usuario']) && $_SESSION['tipo_usuario'] == 2) {
+            echo "<script>alert('Você não tem permissão de acessar está página!');</script>";
+            echo "<script> document.location.href = '/herbarium'; </script>";
+        }
+        else {
+            return $this->redirect()->toRoute(
+                'login'
+            );
+        }
     }
 
     public function ativarAction(){
         $sessionManager = new SessionManager();
         $sessionManager->start();
-        if(isset($_SESSION['logado']) && $_SESSION['logado'] == 'SIM'){
+        if(isset($_SESSION['tipo_usuario']) && $_SESSION['tipo_usuario'] == 1){
             $id = $this->params()->fromRoute('key', null);
+            $status = $this->params()->fromRoute('status', null);
             $usuario = $this->table->getModel($id);
-            $usuario->status = 1;
+            $usuario->status = (int) $status;
             $this->table->saveModel($usuario);
             return $this->redirect()->toRoute(
                 'herbarium',
                 ['controller'=>'usuario']
             );
         }
-        return $this->redirect()->toRoute(
-            'login'
-        );
-    }
-
-    public function desativarAction(){
-        $sessionManager = new SessionManager();
-        $sessionManager->start();
-        if(isset($_SESSION['logado']) && $_SESSION['logado'] == 'SIM'){
-            $id = $this->params()->fromRoute('key', null);
-            $usuario = $this->table->getModel($id);
-            $usuario->status = 0;
-            $this->table->saveModel($usuario);
+        else if(isset($_SESSION['tipo_usuario']) && $_SESSION['tipo_usuario'] == 2) {
+            echo "<script>alert('Você não tem permissão de acessar está página!');</script>";
+            echo "<script> document.location.href = '/herbarium'; </script>";
+        }
+        else {
             return $this->redirect()->toRoute(
-                'herbarium',
-                ['controller'=>'usuario']
+                'login'
             );
         }
-        return $this->redirect()->toRoute(
-            'login'
-        );
     }
 
     protected function initValidatorTranslator()
