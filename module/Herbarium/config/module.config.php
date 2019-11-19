@@ -19,6 +19,16 @@ use Herbarium\Model\TipoUsuarioTable;
 use Herbarium\Model\TipoUsuario;
 use Herbarium\Model\ColetorTable;
 use Herbarium\Model\Coletor;
+use Herbarium\Model\ContinenteTable;
+use Herbarium\Model\Continente;
+use Herbarium\Model\PaisTable;
+use Herbarium\Model\Pais;
+use Herbarium\Model\EstadoTable;
+use Herbarium\Model\Estado;
+use Herbarium\Model\CidadeTable;
+use Herbarium\Model\Cidade;
+use Herbarium\Model\LocalidadeTable;
+use Herbarium\Model\Localidade;
 
 return [
     'router' => [
@@ -75,6 +85,11 @@ return [
                 $sessionManager = new SessionManager();
                 return new Controller\ColetorController($table, $sessionManager);
             },
+            Controller\LocalidadeController::class => function($sm){
+                $table = $sm->get(LocalidadeTable::class);
+                $sessionManager = new SessionManager();
+                return new Controller\LocalidadeController($table, $sessionManager);
+            },
             Controller\AutenticacaoController::class => function($sm){
                 $table = $sm->get(UsuarioTable::class);
                 $sessionManager = new SessionManager();
@@ -85,7 +100,30 @@ return [
                 $parentTable = $sm->get(TipoUsuarioTable::class);
                 $sessionManager = new SessionManager();
                 return new Controller\UsuarioController($table, $parentTable, $sessionManager);
-            }
+            },
+            Controller\ContinenteController::class => function($sm){
+                $table = $sm->get(ContinenteTable::class);
+                $sessionManager = new SessionManager();
+                return new Controller\ContinenteController($table, $sessionManager);
+            },
+            Controller\PaisController::class => function($sm){
+                $table = $sm->get(PaisTable::class);
+                $parentTable = $sm->get(ContinenteTable::class);
+                $sessionManager = new SessionManager();
+                return new Controller\PaisController($table, $parentTable, $sessionManager);
+            },
+            Controller\EstadoController::class => function($sm){
+                $table = $sm->get(EstadoTable::class);
+                $parentTable = $sm->get(PaisTable::class);
+                $sessionManager = new SessionManager();
+                return new Controller\EstadoController($table, $parentTable, $sessionManager);
+            },
+            Controller\CidadeController::class => function($sm){
+                $table = $sm->get(CidadeTable::class);
+                $parentTable = $sm->get(EstadoTable::class);
+                $sessionManager = new SessionManager();
+                return new Controller\CidadeController($table, $parentTable, $sessionManager);
+            },
         ],
     ],
     'route_layouts' => [
@@ -151,6 +189,61 @@ return [
                 $resultSetPrototype = new ResultSet();
                 $resultSetPrototype->setArrayObjectPrototype(new Coletor());
                 return new TableGateway('tb_coletores', $dbAdapter, null, $resultSetPrototype);
+            },
+            ContinenteTable::class => function($sm) {
+                $tableGateway = $sm->get('ContinenteTableGateway');
+                $table = new ContinenteTable($tableGateway);
+                return $table;
+            },
+            'ContinenteTableGateway' => function($sm) {
+                $dbAdapter = $sm->get('Zend\Db\Adapter');
+                $resultSetPrototype = new ResultSet();
+                $resultSetPrototype->setArrayObjectPrototype(new Continente());
+                return new TableGateway('tb_continente', $dbAdapter, null, $resultSetPrototype);
+            },
+            PaisTable::class => function($sm) {
+                $tableGateway = $sm->get('PaisTableGateway');
+                $table = new PaisTable($tableGateway);
+                return $table;
+            },
+            'PaisTableGateway' => function($sm) {
+                $dbAdapter = $sm->get('Zend\Db\Adapter');
+                $resultSetPrototype = new ResultSet();
+                $resultSetPrototype->setArrayObjectPrototype(new Pais());
+                return new TableGateway('tb_pais', $dbAdapter, null, $resultSetPrototype);
+            },
+            EstadoTable::class => function($sm) {
+                $tableGateway = $sm->get('EstadoTableGateway');
+                $table = new EstadoTable($tableGateway);
+                return $table;
+            },
+            'EstadoTableGateway' => function($sm) {
+                $dbAdapter = $sm->get('Zend\Db\Adapter');
+                $resultSetPrototype = new ResultSet();
+                $resultSetPrototype->setArrayObjectPrototype(new Estado());
+                return new TableGateway('tb_estado', $dbAdapter, null, $resultSetPrototype);
+            },
+            CidadeTable::class => function($sm) {
+                $tableGateway = $sm->get('CidadeTableGateway');
+                $table = new CidadeTable($tableGateway);
+                return $table;
+            },
+            'CidadeTableGateway' => function($sm) {
+                $dbAdapter = $sm->get('Zend\Db\Adapter');
+                $resultSetPrototype = new ResultSet();
+                $resultSetPrototype->setArrayObjectPrototype(new Cidade());
+                return new TableGateway('tb_cidade', $dbAdapter, null, $resultSetPrototype);
+            },
+            LocalidadeTable::class => function($sm) {
+                $tableGateway = $sm->get('LocalidadeTableGateway');
+                $table = new LocalidadeTable($tableGateway);
+                return $table;
+            },
+            'LocalidadeTableGateway' => function($sm) {
+                $dbAdapter = $sm->get('Zend\Db\Adapter');
+                $resultSetPrototype = new ResultSet();
+                $resultSetPrototype->setArrayObjectPrototype(new Localidade());
+                return new TableGateway('tb_localidade', $dbAdapter, null, $resultSetPrototype);
             },
         ]
     ]
