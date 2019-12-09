@@ -128,7 +128,12 @@ class UsuarioController extends AbstractActionController
                 if(isset($usuario->id)){
                     $usuario->id = 0;
                 }
-                $this->table->saveModel($usuario);
+                try {
+                    $this->table->saveModel($usuario);
+                } finally {
+                    echo "<script>alert('Nome do usuário já existe!');</script>";
+                    echo "<script> document.location.href = '/herbarium/usuario/edit'; </script>";
+                }
             }
             return $this->redirect()->toRoute(
                 'herbarium',

@@ -29,6 +29,8 @@ use Herbarium\Model\CidadeTable;
 use Herbarium\Model\Cidade;
 use Herbarium\Model\LocalidadeTable;
 use Herbarium\Model\Localidade;
+use Herbarium\Model\ColetaTable;
+use Herbarium\Model\Coleta;
 
 return [
     'router' => [
@@ -71,6 +73,7 @@ return [
             'usuario' => Controller\UsuarioController::class,
             'coletor' => Controller\ColetorController::class,
             'herbarium' => Controller\IndexController::class,
+            'coleta' => Controller\ColetaController::class
         ],
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
@@ -101,28 +104,13 @@ return [
                 $sessionManager = new SessionManager();
                 return new Controller\UsuarioController($table, $parentTable, $sessionManager);
             },
-            Controller\ContinenteController::class => function($sm){
-                $table = $sm->get(ContinenteTable::class);
+            Controller\ColetaController::class => function($sm){
+                $table = $sm->get(ColetaTable::class);
+                $parentTableColetor = $sm->get(ColetorTable::class);
+                $parentTableLocalidade = $sm->get(LocalidadeTable::class);
+                $parentTableCidade = $sm->get(CidadeTable::class);
                 $sessionManager = new SessionManager();
-                return new Controller\ContinenteController($table, $sessionManager);
-            },
-            Controller\PaisController::class => function($sm){
-                $table = $sm->get(PaisTable::class);
-                $parentTable = $sm->get(ContinenteTable::class);
-                $sessionManager = new SessionManager();
-                return new Controller\PaisController($table, $parentTable, $sessionManager);
-            },
-            Controller\EstadoController::class => function($sm){
-                $table = $sm->get(EstadoTable::class);
-                $parentTable = $sm->get(PaisTable::class);
-                $sessionManager = new SessionManager();
-                return new Controller\EstadoController($table, $parentTable, $sessionManager);
-            },
-            Controller\CidadeController::class => function($sm){
-                $table = $sm->get(CidadeTable::class);
-                $parentTable = $sm->get(EstadoTable::class);
-                $sessionManager = new SessionManager();
-                return new Controller\CidadeController($table, $parentTable, $sessionManager);
+                return new Controller\ColetaController($table, $parentTableColetor, $parentTableLocalidade, $parentTableCidade, $sessionManager);
             },
         ],
     ],
@@ -244,6 +232,18 @@ return [
                 $resultSetPrototype = new ResultSet();
                 $resultSetPrototype->setArrayObjectPrototype(new Localidade());
                 return new TableGateway('tb_localidade', $dbAdapter, null, $resultSetPrototype);
+            },
+            ColetaTable::class => function($sm) {
+                $tableGateway = $sm->get('ColetaTableGateway');
+                $tableGatewayLocalidade = $sm->get('LocalidadeTableGateway');
+                $table = new ColetaTable($tableGateway, $tableGatewayLocalidade);
+                return $table;
+            },
+            'ColetaTableGateway' => function($sm) {
+                $dbAdapter = $sm->get('Zend\Db\Adapter');
+                $resultSetPrototype = new ResultSet();
+                $resultSetPrototype->setArrayObjectPrototype(new Coleta());
+                return new TableGateway('tb_coletas', $dbAdapter, null, $resultSetPrototype);
             },
         ]
     ]

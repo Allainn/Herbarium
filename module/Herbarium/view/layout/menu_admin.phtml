@@ -41,5 +41,27 @@
                 </a>
             </div>
         </li>
+
+        <li class="active">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="<?=$this->url(
+                        'herbarium',
+                        array(
+                            'action'=>'edit',
+                            'controller'=>'coleta'
+                        )
+                    )?>">
+                    Cadastro Coleta
+                </a>
+            </div>
+        </li>
+        <li class="active">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="<?= $this->url('herbarium',['controller'=>'coleta']) ?>">
+                    Listar Coletas
+                </a>
+            </div>
+        </li>
+        
     </ul>
 </div>

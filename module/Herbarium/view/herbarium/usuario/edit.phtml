@@ -13,26 +13,30 @@
         ]));
     
     $form->prepare();
-
-    echo $this->form()->openTag($form);
-    echo $this->formRow($form->get('id'));
-    echo '<br>';
-    echo $this->formRow($form->get('nome'));
-    echo '<br>';
-    echo $this->formRow($form->get('sobrenome'));
-    echo '<br>';
-    echo $this->formRow($form->get('login'));
-    echo '<br>';
-    echo $this->formRow($form->get('senha'));
-    echo '<br>';
-    echo $this->formRow($form->get('link_lattes'));
-    echo '<br>';
-    echo $this->formRow($form->get('tb_tipo_usuarios_id'));
-    echo '<br>';
-    echo $this->formRow($form->get('status'));
-    echo '<br>';
-    echo $this->formRow($form->get('submit'));
-    //echo $this->formcollection($form);
-    echo $this->form()->closeTag();
-
 ?>
+    <div class="container">
+        <div class="row">
+        <?php
+            echo $this->form()->openTag($form);
+            echo $this->formRow($form->get('id'));
+            echo '<br>';
+            echo $this->formRow($form->get('nome'));
+            echo '<br>';
+            echo $this->formRow($form->get('sobrenome'));
+            echo '<br>';
+            echo $this->formRow($form->get('login'));
+            echo '<br>';
+            echo $this->formRow($form->get('senha'));
+            echo '<br>';
+            echo $this->formRow($form->get('link_lattes'));
+            echo '<br>';
+            echo $this->formRow($form->get('tb_tipo_usuarios_id'));
+            echo '<br>';
+            echo $this->formRow($form->get('status'));
+            echo '<br>';
+            echo $this->formRow($form->get('submit'));
+            //echo $this->formcollection($form);
+            echo $this->form()->closeTag();
+        ?>
+        </div>
+    </div>

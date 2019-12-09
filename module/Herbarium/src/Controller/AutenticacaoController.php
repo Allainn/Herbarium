@@ -54,13 +54,5 @@ class AutenticacaoController extends AbstractActionController
 
     }
 
-
-    public function indexAction()
-    {
-        return new ViewModel(
-            ['models' => $this->table->fetchAll()]
-        );
-    }
-
 }
 ?>
