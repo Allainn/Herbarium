@@ -14,19 +14,23 @@ use Zend\Mvc\I18n\Translator as MvcTranslator;
 use Zend\Validator\AbstractValidator;
 use Zend\I18n\Translator\Translator;
 use Zend\I18n\Translator\Resources;
-use Herbarium\Form\Usuario as UsuarioForm;
-use Herbarium\Model\Usuario;
+use Herbarium\Form\Coleta as ColetaForm;
+use Herbarium\Model\Coleta;
 use Zend\Session\SessionManager;
 
-class UsuarioController extends AbstractActionController
+class ColetaController extends AbstractActionController
 {
     private $table;
-    private $parentTable;
+    private $parentTableColetor;
+    private $parentTableLocalidade;
+    private $parentTableCidade;
 
-    public function __construct($table, $parentTable, $sessionManager)
+    public function __construct($table, $parentTableColetor, $parentTableLocalidade, $parentTableCidade, $sessionManager)
     {
         $this->table = $table;
-        $this->parentTable = $parentTable;
+        $this->parentTableColetor = $parentTableColetor;
+        $this->parentTableLocalidade = $parentTableLocalidade;
+        $this->parentTableCidade = $parentTableCidade;
         $sessionManager->start();
     }
 
@@ -59,25 +63,29 @@ class UsuarioController extends AbstractActionController
         $sessionManager->start();
         if(isset($_SESSION['tipo_usuario']) && $_SESSION['tipo_usuario'] == 1){
             $id = $this->params()->fromRoute('key', null);
-            $usuario = $this->table->getModel($id);
-            //print_r($usuario);
-            $form = new UsuarioForm(
-                'usuario',
-                ['table' => $this->parentTable]
+            $coleta = $this->table->getModel($id);
+            //print_r($coleta);
+            $form = new ColetaForm(
+                'coleta',
+                [
+                    'coletor' => $this->parentTableColetor,
+                    'localidade' => $this->parentTableLocalidade,
+                    'cidade' => $this->parentTableCidade
+                ]
             );
             $form->get('submit')->setValue(
                 empty($id) ? 'Cadastrar' : 'Alterar'
             );
             $sessionStorage = new SessionArrayStorage();
             if (isset($sessionStorage->model)){
-                $usuario->exchangeArray($sessionStorage->model->toArray());
+                $coleta->exchangeArray($sessionStorage->model->toArray());
                 unset($sessionStorage->model);
-                $form->setInputFilter($usuario->getInputFilter());
+                $form->setInputFilter($coleta->getInputFilter());
                 $this->initValidatorTranslator();
-                $form->bind($usuario);
+                $form->bind($coleta);
                 $form->isValid();
             } else{
-                $form->bind($usuario);
+                $form->bind($coleta);
             }
             return [
                 'form' => $form,
@@ -105,12 +113,16 @@ class UsuarioController extends AbstractActionController
         if(isset($_SESSION['tipo_usuario']) && $_SESSION['tipo_usuario'] == 1){
             $request = $this->getRequest();
             if ($request->isPost()) {
-                $form = new UsuarioForm(
-                    'usuario',
-                    ['table' => $this->parentTable]
+                $form = new ColetaForm(
+                    'coleta',
+                    [
+                        'coletor' => $this->parentTableColetor,
+                        'localidade' => $this->parentTableLocalidade,
+                        'cidade' => $this->parentTableCidade
+                    ]
                 );
-                $usuario = new Usuario();
-                $form->setInputFilter($usuario->getInputFilter());
+                $coleta = new Coleta();
+                $form->setInputFilter($coleta->getInputFilter());
                 $post = $request->getPost();
                 $form->setData($post);
                 if (!$form->isValid()){
@@ -120,23 +132,18 @@ class UsuarioController extends AbstractActionController
                         'herbarium',
                         [
                             'action'=>'edit',
-                            'controller'=>'usuario'
+                            'controller'=>'coleta'
                         ]
                     );
                 }
-                $usuario->exchangeArray($form->getData());
-                try {
-                    $this->table->saveModel($usuario);
-                } finally {
-                    echo "<script>alert('Nome do usuário já existe!');</script>";
-                    echo "<script> document.location.href = '/herbarium/usuario/edit'; </script>";
-                }
+                $coleta->exchangeArray($form->getData());
+                $this->table->saveModel($coleta);
             }
             return $this->redirect()->toRoute(
                 'herbarium',
                 [
                     'action'=>'edit',
-                    'controller'=>'usuario'
+                    'controller'=>'coleta'
                 ]
             );
         }
@@ -157,12 +164,12 @@ class UsuarioController extends AbstractActionController
         if(isset($_SESSION['tipo_usuario']) && $_SESSION['tipo_usuario'] == 1){
             $id = $this->params()->fromRoute('key', null);
             $status = $this->params()->fromRoute('status', null);
-            $usuario = $this->table->getModel($id);
-            $usuario->status = (int) $status;
-            $this->table->saveModel($usuario);
+            $coleta = $this->table->getModel($id);
+            $coleta->status = (int) $status;
+            $this->table->saveModel($coleta);
             return $this->redirect()->toRoute(
                 'herbarium',
-                ['controller'=>'usuario']
+                ['controller'=>'coleta']
             );
         }
         else if(isset($_SESSION['tipo_usuario']) && $_SESSION['tipo_usuario'] == 2) {

@@ -1,0 +1,57 @@
+<?php
+    $this->headScript()->prependFile($this->basePath() . '/js/ativar.js', 'text/javascript');
+    $title = 'Coletas ';
+    $this->headTitle($title);
+?>
+<h1><?=$this->escapeHtml($title)?></h1>
+
+<table class="table">
+<tr>
+    <th>Catálogo</th>
+    <th>Coletor</th>
+    <th>Número Coleta</th>
+    <th>Comentários</th>
+    <th>Data Coleta</th>
+    <th>Habitate</th>
+    <th>Cidade</th>
+    <th>Local</th>
+    <th>Descrição Local</th>
+    <th>Reino</th>
+    <th>Filo</th>
+    <th>Familia</th>
+    <th>Gênero</th>
+    <th>&nbsp;</th>
+</tr>
+<?php foreach ($this->models as $model):?>
+<tr>
+    <td><?=$this->escapeHtml($model->catalogo)?></td>
+    <td><?=$this->escapeHtml($model->coletor->nome_citacoes)?></td>
+    <td><?=$this->escapeHtml($model->num_coleta)?></td>
+    <td><?=$this->escapeHtml($model->comentarios)?></td>
+    <td><?=$this->escapeHtml($model->data_coleta)?></td>
+    <td><?=$this->escapeHtml($model->habitat)?></td>
+    <td><?=$this->escapeHtml($model->cidade->nome)?></td>
+    <td><?=$this->escapeHtml($model->localidade->local)?></td>
+    <td><?=$this->escapeHtml($model->localidade->desc_especifica)?></td>
+    <td><?=$this->escapeHtml($model->plant_reino)?></td>
+    <td><?=$this->escapeHtml($model->plant_filo)?></td>
+    <td><?=$this->escapeHtml($model->plant_familia)?></td>
+    <td><?=$this->escapeHtml($model->plant_genero)?></td>
+    <td>
+        <a href="<?=$this->url('herbarium',
+            array(
+                'action'=>'edit',
+                'controller'=>'coleta',
+                'key' => $model->id
+            )
+        )?>">Editar</a>
+        <?php if($model->status == 1) {
+            echo("<button class='desativar' url='".$this->url('herbarium',array('action'=>'ativar','controller'=>'coleta','key' => $model->id, 'status' => '0'))."'>Desativar</button>");
+        } else {
+            echo("<button class='ativar' url='".$this->url('herbarium',array('action'=>'ativar','controller'=>'coleta','key' => $model->id, 'status' => '1'))."'>Ativar</button>");
+        }?>
+    </td>
+</tr>
+<?php endforeach ?>
+</table>
+

@@ -1,0 +1,62 @@
+<?php
+    $title = $this->title . ' Coleta';
+    $this->headTitle($title);
+?>
+<h1><?=$this->escapeHtml($title)?></h1>
+<?php
+    $form = $this->form;
+    $form->setAttribute('action', $this->url(
+        'herbarium',
+        [
+            'action' => 'save',
+            'controller' => 'coleta'
+        ]));
+    
+    $form->prepare();
+?>
+<div class="form">
+    <div class="row">
+    <?php
+        echo $this->form()->openTag($form);
+        echo $this->formRow($form->get('id'));
+        echo '<br>';
+        echo $this->formRow($form->get('tb_coletores_id'));
+        echo '<br>';
+        echo $this->formRow($form->get('catalogo'));
+        echo '<br>';
+        echo $this->formRow($form->get('num_coleta'));
+        echo '<br>';
+        echo $this->formRow($form->get('comentarios'));
+        echo '<br>';
+        echo $this->formRow($form->get('data_coleta'));
+        echo '<br>';
+        echo $this->formRow($form->get('habitat'));
+        echo '<br>';
+        echo $this->formRow($form->get('tb_cidade_id'));
+        echo '<br>';
+        echo $this->formRow($form->get('local'));
+        echo '<br>';
+        echo $this->formRow($form->get('desc_especifica'));
+        echo '<br>';
+        echo $this->formRow($form->get('altitude'));
+        echo '<br>';
+        echo $this->formRow($form->get('latitude'));
+        echo '<br>';
+        echo $this->formRow($form->get('longitude'));
+        echo '<br>';
+        echo $this->formRow($form->get('plant_reino'));
+        echo '<br>';
+        echo $this->formRow($form->get('plant_filo'));
+        echo '<br>';
+        echo $this->formRow($form->get('plant_familia'));
+        echo '<br>';
+        echo $this->formRow($form->get('plant_genero'));
+        echo '<br>';
+        echo $this->formRow($form->get('status'));
+        echo '<br>';
+        echo $this->formRow($form->get('submit'));
+        //echo $this->formcollection($form);
+        echo $this->form()->closeTag();
+    ?>
+    </div>
+</div>
