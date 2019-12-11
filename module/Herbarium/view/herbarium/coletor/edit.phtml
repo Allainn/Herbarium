@@ -13,16 +13,20 @@
         ]));
     
     $form->prepare();
-
-    echo $this->form()->openTag($form);
-    echo $this->formRow($form->get('id'));
-    echo '<br>';
-    echo $this->formRow($form->get('nome_completo'));
-    echo '<br>';
-    echo $this->formRow($form->get('nome_citacoes'));
-    echo '<br>';
-    echo $this->formRow($form->get('submit'));
-    //echo $this->formcollection($form);
-    echo $this->form()->closeTag();
-
 ?>
+<div class="form">
+    <div class="row">
+    <?php
+        echo $this->form()->openTag($form);
+        echo $this->formRow($form->get('id'));
+        echo '<br>';
+        echo $this->formRow($form->get('nome_completo'));
+        echo '<br>';
+        echo $this->formRow($form->get('nome_citacoes'));
+        echo '<br>';
+        echo $this->formRow($form->get('submit'));
+        //echo $this->formcollection($form);
+        echo $this->form()->closeTag();
+    ?>
+    </div>
+</div>

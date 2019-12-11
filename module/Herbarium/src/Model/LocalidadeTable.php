@@ -53,5 +53,19 @@
 
             return $row;
         }
+
+        /**
+         * 
+         * @param Localidade $localidade
+         */
+        public function saveModel(Localidade $localidade)
+        {
+            $data = array(
+                'local' => $localidade->local,
+                'desc_especifica' => $localidade->desc_especifica
+            );
+            $data['id'] = 0;
+            return $this->tableGateway->insert($data);
+        }
     }
 ?>
